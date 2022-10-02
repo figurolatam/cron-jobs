@@ -25,28 +25,28 @@ generate_post_data()
     cat <<EOF
 {
     "channel": "$SLACK_CHANNEL_ID",
-	"blocks": [
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": "Chatwoot has been automatically upgraded at \`$HOSTNAME\`."
-			}
-		},
-		{
-			"type": "section",
-			"fields": [
-				{
-					"type": "mrkdwn",
-					"text": "*Previous version:* \`$VERSION_PREV\`"
-				},
+    "blocks": [
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "Chatwoot has been automatically upgraded at \`$HOSTNAME\`."
+            }
+        },
+        {
+            "type": "section",
+            "fields": [
                 {
-					"type": "mrkdwn",
-					"text": "*Current version:* \`$VERSION\`"
-				}
-			]
-		}
-	]
+                    "type": "mrkdwn",
+                    "text": "*Previous version:* \`$VERSION_PREV\`"
+                },
+                {
+                    "type": "mrkdwn",
+                    "text": "*Current version:* \`$VERSION\`"
+                }
+            ]
+        }
+    ]
 }
 EOF
 }
