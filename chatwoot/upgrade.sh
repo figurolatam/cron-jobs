@@ -44,25 +44,23 @@ generate_post_data()
             }
         },
         {
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": "*Previous version:* `$VERSION_PREV` \n ```$COMMIT_PREV```"
-			}
-		},
-		{
-			"type": "section",
-			"text": {
-				"type": "mrkdwn",
-				"text": "*Current version:* `$VERSION` \n ```$COMMIT```"
-			}
-		}
+                        "type": "section",
+                        "text": {
+                                "type": "mrkdwn",
+                                "text": "*Previous version:* \`$(echo $VERSION_PREV)\` \n \`\`\`$(echo $COMMIT_PREV)\`\`\`"
+                        }
+                },
+                {
+                        "type": "section",
+                        "text": {
+                                "type": "mrkdwn",
+                                "text": "*Current version:* \`$(echo $VERSION)\` \n \`\`\`$(echo $COMMIT)\`\`\`"
+                        }
+                }
     ]
 }
 EOF
 }
-
-echo $(generate_post_data)
 
 curl -H "Content-type: application/json" \
     --data "$(generate_post_data)" \
