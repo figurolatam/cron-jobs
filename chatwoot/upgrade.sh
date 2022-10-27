@@ -10,12 +10,22 @@ else
     exit 1
 fi
 
+DIR=$(cd -P -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+
 VERSION_PREV=$(node --eval="process.stdout.write(require($PACKAGE_JSON_PATH).version)")
+
+cd "$DIR/chatwoot/chatwoot"
+COMMIT_PREV=$(git log --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %Creset' --abbrev-commit -n 1)
+cd "$DIR"
 
 cwctl --upgrade
 cwctl --restart
 
 VERSION=$(node --eval="process.stdout.write(require($PACKAGE_JSON_PATH).version)")
+
+cd "$DIR/chatwoot/chatwoot"
+COMMIT=$(git log --pretty=format:'%Cred%h%Creset%C(yellow)%d%Creset %s %Cgreen(%cr) %Creset' --abbrev-commit -n 1)
+cd "$DIR"
 
 eval SLACK_CHANNEL_ID=${SLACK_CHANNEL_ID}
 eval SLACK_TOKEN=${SLACK_TOKEN}
@@ -34,18 +44,19 @@ generate_post_data()
             }
         },
         {
-            "type": "section",
-            "fields": [
-                {
-                    "type": "mrkdwn",
-                    "text": "*Previous version:* \`$VERSION_PREV\`"
-                },
-                {
-                    "type": "mrkdwn",
-                    "text": "*Current version:* \`$VERSION\`"
-                }
-            ]
-        }
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*Previous version:* `$VERSION_PREV` \n ```$COMMIT_PREV```"
+			}
+		},
+		{
+			"type": "section",
+			"text": {
+				"type": "mrkdwn",
+				"text": "*Current version:* `$VERSION` \n ```$COMMIT```"
+			}
+		}
     ]
 }
 EOF
